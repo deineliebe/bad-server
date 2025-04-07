@@ -141,7 +141,7 @@ export const getOrders = async (
                 totalOrders,
                 totalPages,
                 currentPage: Number(page),
-                pageSize: Number(limit),
+                pageSize: Math.min(Number(limit), 10),
             },
         })
     } catch (error) {
@@ -215,7 +215,7 @@ export const getOrdersCurrentUser = async (
                 totalOrders,
                 totalPages,
                 currentPage: Number(page),
-                pageSize: Number(limit),
+                pageSize: Math.min(Number(limit), 10),
             },
         })
     } catch (error) {
