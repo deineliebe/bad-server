@@ -1,5 +1,6 @@
 services:
   frontend:
+    container_name: frontend
     build:
       context: frontend
     env_file:
@@ -9,6 +10,7 @@ services:
 
   mongo:
     image: mongo
+    container_name: mongo
     restart: always
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
@@ -21,6 +23,7 @@ services:
       - internal
 
   backend:
+    container_name: backend
     restart: always
     build:
       context: backend
@@ -37,6 +40,7 @@ services:
       - mongo
 
   server:
+    container_name: nginx
     build:
       context: nginx
     ports:
