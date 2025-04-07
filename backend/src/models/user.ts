@@ -80,6 +80,12 @@ const userSchema = new mongoose.Schema<IUser, IUserModel, IUserMethods>(
         },
         phone: {
             type: String,
+            minlength: [2, 'Минимальная длина поля "phone" - 2'],
+            maxlength: [16, 'Максимальная длина поля "phone" - 16'],
+            validate: {
+                validator: (v: string) => validator.isMobilePhone(v),
+                message: 'Поле "phone" должно быть валидным телефонным номером',
+            },
         },
         lastOrderDate: {
             type: Date,
