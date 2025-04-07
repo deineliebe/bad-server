@@ -23,3 +23,11 @@ export const REFRESH_TOKEN = {
         } as CookieOptions,
     },
 }
+
+export const limiter = {
+    windowMs: 15 * 60 * 1000,
+    limit: 45,
+    message: 'Превышено количество запросов',
+    standardHeaders: true,
+    legacyHeaders: false,
+}
