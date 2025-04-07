@@ -309,9 +309,18 @@ export const createOrder = async (
         if (totalBasket !== total) {
             return next(new BadRequestError('Неверная сумма заказа'))
         }
-        const sanitizedPhone = sanitizeHtml(phone, {});
-        const sanitizedEmail = sanitizeHtml(email, {});
-        const sanitizedComment = sanitizeHtml(comment, {});
+        const sanitizedPhone = sanitizeHtml(phone, {
+            allowedTags: [],
+            allowedAttributes: {},
+        });
+        const sanitizedEmail = sanitizeHtml(email, {
+            allowedTags: [],
+            allowedAttributes: {},
+        });
+        const sanitizedComment = sanitizeHtml(comment, {
+            allowedTags: [],
+            allowedAttributes: {},
+        });
 
         const newOrder = new Order({
             totalAmount: total,

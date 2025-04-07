@@ -39,16 +39,12 @@ const types = [
     'image/svg+xml',
 ]
 
-const isAllowedFiles = (filetype: string) => {
-  return types.includes(filetype);
-}
-
 const fileFilter = (
     _req: Request,
     file: Express.Multer.File,
     cb: FileFilterCallback
 ) => {
-    if (!isAllowedFiles(file.mimetype)) {
+    if (!types.includes(file.mimetype)) {
         return cb(null, false)
     }
 
@@ -56,7 +52,9 @@ const fileFilter = (
 }
 
 export default multer({
-    storage, 
-    limits: { fileSize: 1000000 },
-    fileFilter
+    storage,
+    fileFilter,
+    limits: {
+        fileSize: 1024 * 10240,
+    },
 })
