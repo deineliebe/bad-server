@@ -13,23 +13,20 @@ import routes from './routes'
 
 const { PORT = 3000 } = process.env
 const app = express()
-
+app.use(rateLimit(limiter))
 app.use(cookieParser())
-
 app.use(cors({
     origin: ORIGIN_ALLOW,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    credentials: true
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: true,
 }));
-// app.use(express.static(path.join(__dirname, 'public')));
-
+app.use(express.static(path.join(__dirname, 'public')));
 app.use(serveStatic(path.join(__dirname, 'public')))
-app.use(rateLimit(limiter))
 
 app.use(urlencoded({ extended: true }))
 app.use(json())
 
-app.options('*', cors())
 app.use(routes)
 app.use(errors())
 app.use(errorHandler)
