@@ -50,7 +50,7 @@ const fileFilter = (
         return cb(null, false)
     }
     if (
-        !extname(file.originalname) || !allowedExtentions.includes(
+        !file.originalname || !extname(file.originalname) || !allowedExtentions.includes(
             extname(file.originalname).toLowerCase()
         )
     ) {
