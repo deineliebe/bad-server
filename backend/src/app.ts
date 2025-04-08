@@ -31,6 +31,10 @@ app.use(serveStatic(path.join(__dirname, 'public')))
 app.use(urlencoded({ extended: true }))
 app.use(json())
 
+app.options('*', cors({
+    origin: ORIGIN_ALLOW,
+    credentials: true,
+}));
 app.use(routes)
 app.use(errors())
 app.use(errorHandler)
