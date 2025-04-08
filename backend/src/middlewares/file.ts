@@ -39,7 +39,7 @@ export const types = [
     'image/svg+xml',
 ]
 
-export const allowedExtentions = ['.jpg', '.jpeg', '.png', 'gif', 'svg']
+export const allowedExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.svg']
 
 const fileFilter = (
     _req: Request,
@@ -56,6 +56,6 @@ export default multer({
     storage,
     fileFilter,
     limits: {
-        fileSize: 10485760,
+        fileSize: 10 * 1024 * 1024,
     },
 })
