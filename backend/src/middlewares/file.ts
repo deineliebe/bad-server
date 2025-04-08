@@ -1,7 +1,7 @@
 import { faker } from '@faker-js/faker'
 import { Request, Express } from 'express'
 import multer, { FileFilterCallback } from 'multer'
-import path, { extname, join } from 'path'
+import { extname, join } from 'path'
 import fs from 'fs'
 
 type DestinationCallback = (error: Error | null, destination: string) => void
@@ -39,24 +39,26 @@ export const types = [
     'image/svg+xml',
 ]
 
-const fileFilter = async (
+const allowedExtentions = ['.jpg', '.jpeg', '.png', 'gif', 'svg']
+
+const fileFilter = (
     req: Request,
     file: Express.Multer.File,
     cb: FileFilterCallback
 ) => {
-    if (!types.includes(file.mimetype)) {
+    if (!file || !file.mimetype || !types.includes(file.mimetype)) {
         return cb(null, false)
     }
     if (
-        !['.jpg', '.jpeg', '.png', 'gif', 'svg'].includes(
-            extname(file.originalname)
+        !extname(file.originalname) || !allowedExtentions.includes(
+            extname(file.originalname).toLowerCase()
         )
     ) {
         return cb(null, false)
     }
     if (
-        req.headers['content-length'] &&
-        Number(req.headers['content-length']) <= 2000
+        !req.headers['content-length'] ||
+        Number(req.headers['content-length']) < 2000
     ) {
         return cb(null, false)
     }

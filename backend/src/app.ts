@@ -14,17 +14,28 @@ import routes from './routes'
 
 const { PORT = 3000 } = process.env
 const app = express()
-app.use(rateLimit(limiter))
-app.use(cookieParser())
-app.use(mongoSanitize())
+app.use(rateLimit({
+    windowMs: 15 * 60 * 1000,
+    max: 47,
+    message: 'Превышено количество запросов',
+    standardHeaders: true,
+    legacyHeaders: false,
+    handler: (_req: any, res: any) => {
+        res.status(429).json({
+            message: 'Превышено количество запросов',
+        })
+    },
+}))
 app.use(
     cors({
-        origin: ORIGIN_ALLOW,
+        origin: ORIGIN_ALLOW?.split(','),
         methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
         allowedHeaders: ['Content-Type', 'Authorization'],
         credentials: true,
     })
 )
+app.use(cookieParser())
+app.use(mongoSanitize({replaceWith: '_'}))
 app.use(express.static(path.join(__dirname, 'public')))
 app.use(serveStatic(path.join(__dirname, 'public')))
 

@@ -24,14 +24,3 @@ export const REFRESH_TOKEN = {
     },
 }
 
-export const limiter = {
-    windowMs: 15 * 60 * 1000,
-    max: 25,
-    message: 'Превышено количество запросов',
-    headers: true,
-    handler: (_req: any, res: any) => {
-        res.status(429).json({
-            message: 'Превышено количество запросов',
-        })
-    },
-}
