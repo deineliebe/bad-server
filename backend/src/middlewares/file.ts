@@ -39,27 +39,14 @@ export const types = [
     'image/svg+xml',
 ]
 
-const allowedExtentions = ['.jpg', '.jpeg', '.png', 'gif', 'svg']
+export const allowedExtentions = ['.jpg', '.jpeg', '.png', 'gif', 'svg']
 
 const fileFilter = (
-    req: Request,
+    _req: Request,
     file: Express.Multer.File,
     cb: FileFilterCallback
 ) => {
     if (!file || !file.mimetype || !types.includes(file.mimetype)) {
-        return cb(null, false)
-    }
-    if (
-        !file.originalname || !extname(file.originalname) || !allowedExtentions.includes(
-            extname(file.originalname).toLowerCase()
-        )
-    ) {
-        return cb(null, false)
-    }
-    if (
-        !req.headers['content-length'] ||
-        Number(req.headers['content-length']) < 2000
-    ) {
         return cb(null, false)
     }
     return cb(null, true)
