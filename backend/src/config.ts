@@ -26,8 +26,7 @@ export const REFRESH_TOKEN = {
 
 export const limiter = {
     windowMs: 15 * 60 * 1000,
-    limit: 35,
+    max: 25,
     message: 'Превышено количество запросов',
-    standardHeaders: true,
-    legacyHeaders: false,
+    headers: true,
 }

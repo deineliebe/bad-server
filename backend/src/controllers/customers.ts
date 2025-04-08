@@ -144,7 +144,7 @@ export const getCustomers = async (
             pagination: {
                 totalUsers,
                 totalPages,
-                currentPage: Number(page),
+                currentPage: Math.max(Number(page), 1),
                 pageSize: Math.min(Number(limit), 10),
             },
         })

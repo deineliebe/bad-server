@@ -27,7 +27,7 @@ const storage = multer.diskStorage({
         file: Express.Multer.File,
         cb: FileNameCallback
     ) => {
-        cb(null, faker.string.uuid() + path.extname(file.originalname))
+        cb(null, `${faker.string.uuid()}${extname(file.originalname)}`)
     },
 })
 
@@ -39,7 +39,7 @@ const types = [
     'image/svg+xml',
 ]
 
-const fileFilter = (
+const fileFilter = async (
     req: Request,
     file: Express.Multer.File,
     cb: FileFilterCallback
