@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express'
 import { FilterQuery, Error as MongooseError, Types } from 'mongoose'
-import sanitizeHtml from 'sanitize-html';
+import sanitizeHtml from 'sanitize-html'
 import BadRequestError from '../errors/bad-request-error'
 import NotFoundError from '../errors/not-found-error'
 import Order, { IOrder } from '../models/order'
@@ -312,15 +312,15 @@ export const createOrder = async (
         const sanitizedPhone = sanitizeHtml(phone, {
             allowedTags: [],
             allowedAttributes: {},
-        });
+        })
         const sanitizedEmail = sanitizeHtml(email, {
             allowedTags: [],
             allowedAttributes: {},
-        });
+        })
         const sanitizedComment = sanitizeHtml(comment, {
             allowedTags: [],
             allowedAttributes: {},
-        });
+        })
 
         const newOrder = new Order({
             totalAmount: total,

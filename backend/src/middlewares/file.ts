@@ -1,7 +1,8 @@
 import { faker } from '@faker-js/faker'
 import { Request, Express } from 'express'
 import multer, { FileFilterCallback } from 'multer'
-import path, { join } from 'path'
+import path, { extname, join } from 'path'
+import fs from 'fs'
 
 type DestinationCallback = (error: Error | null, destination: string) => void
 type FileNameCallback = (error: Error | null, filename: string) => void
@@ -12,15 +13,13 @@ const storage = multer.diskStorage({
         _file: Express.Multer.File,
         cb: DestinationCallback
     ) => {
-        cb(
-            null,
-            join(
-                __dirname,
-                process.env.UPLOAD_PATH_TEMP
-                    ? `../public/${process.env.UPLOAD_PATH_TEMP}`
-                    : '../public'
-            )
-        )
+        const directoryForFilesPath = process.env.UPLOAD_PATH_TEMP
+            ? `../public/${process.env.UPLOAD_PATH_TEMP}`
+            : '../public'
+        if (!fs.existsSync(directoryForFilesPath)) {
+            fs.mkdirSync(directoryForFilesPath, { recursive: true })
+        }
+        cb(null, join(__dirname, directoryForFilesPath))
     },
 
     filename: (
@@ -48,7 +47,17 @@ const fileFilter = (
     if (!types.includes(file.mimetype)) {
         return cb(null, false)
     }
-    if (Number(req.headers['content-length']) <= 2000) {
+    if (
+        !['.jpg', '.jpeg', '.png', 'gif', 'svg'].includes(
+            extname(file.originalname)
+        )
+    ) {
+        return cb(null, false)
+    }
+    if (
+        req.headers['content-length'] &&
+        Number(req.headers['content-length']) <= 2000
+    ) {
         return cb(null, false)
     }
     return cb(null, true)
@@ -58,6 +67,6 @@ export default multer({
     storage,
     fileFilter,
     limits: {
-        fileSize: 1024 * 10240,
+        fileSize: 10485760,
     },
 })

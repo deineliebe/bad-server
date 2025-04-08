@@ -15,13 +15,15 @@ const { PORT = 3000 } = process.env
 const app = express()
 app.use(rateLimit(limiter))
 app.use(cookieParser())
-app.use(cors({
-    origin: ORIGIN_ALLOW,
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
-    credentials: true,
-}));
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(
+    cors({
+        origin: ORIGIN_ALLOW,
+        methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+        allowedHeaders: ['Content-Type', 'Authorization'],
+        credentials: true,
+    })
+)
+app.use(express.static(path.join(__dirname, 'public')))
 app.use(serveStatic(path.join(__dirname, 'public')))
 
 app.use(urlencoded({ extended: true }))
