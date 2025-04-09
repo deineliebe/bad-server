@@ -13,18 +13,23 @@ import routes from './routes'
 
 const { PORT = 3000 } = process.env
 const app = express()
-app.use(cors({ origin: ORIGIN_ALLOW, credentials: true }))
+app.set('trust proxy', 'loopback')
+app.use(cookieParser())
+app.use(cors({
+    origin: ORIGIN_ALLOW.split(','),
+    methods: ['GET', 'POST', 'PATCH', 'DELETE'],
+    credentials: true,
+}))
 app.use(rateLimit({
     windowMs: 15 * 60 * 1000,
     max: 40,
     message: 'Превышено количество запросов',
-    validate: { xForwardedForHeader: false },
 }))
 
 app.use(serveStatic(path.join(__dirname, 'public')))
 
-app.use(urlencoded({ limit: '1mb', extended: true }))
-app.use(json({ limit: '1mb' }))
+app.use(urlencoded({ extended: true }))
+app.use(json())
 
 app.options('*', cors())
 
