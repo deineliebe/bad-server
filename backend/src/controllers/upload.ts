@@ -1,8 +1,9 @@
 import { NextFunction, Request, Response } from 'express'
 import { constants } from 'http2'
 import BadRequestError from '../errors/bad-request-error'
-import { allowedExtensions, types } from '../middlewares/file'
+import file, { allowedExtensions, types } from '../middlewares/file'
 import { extname } from 'path'
+import { faker } from '@faker-js/faker'
 
 export const uploadFile = async (
     req: Request,
@@ -28,7 +29,7 @@ export const uploadFile = async (
             : `/${req.file?.filename}`
         return res.status(constants.HTTP_STATUS_CREATED).send({
             fileName,
-            originalName: req.file?.originalname,
+            originalName: `${faker.string.uuid()}${extname(file.originalname)}`,
         })
     } catch (error) {
         return next(error)
