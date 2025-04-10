@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from 'express'
 import { constants } from 'http2'
+import sharp from 'sharp'
 import BadRequestError from '../errors/bad-request-error'
 
 export const uploadFile = async (
@@ -11,6 +12,7 @@ export const uploadFile = async (
         return next(new BadRequestError('Файл не загружен'))
     }
     try {
+        await sharp(req.file.path).metadata()
         if (req.file?.size < 2000) {
             return next(new BadRequestError('Слишком небольшой размер файла'))
         }
