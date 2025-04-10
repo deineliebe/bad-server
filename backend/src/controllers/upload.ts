@@ -15,7 +15,11 @@ export const uploadFile = async (
     }
     try {
         if (!req.file?.mimetype || !types.includes(req.file.mimetype)) {
-            return next(new BadRequestError('Можно загружать только файлы в форматах: png, jpg, jpeg, gif и svg'))
+            return next(
+                new BadRequestError(
+                    'Можно загружать только файлы в форматах: png, jpg, jpeg, gif и svg'
+                )
+            )
         }
         const fileExtension = extname(req?.file?.originalname).toLowerCase()
         if (!fileExtension || !allowedExtensions.includes(fileExtension)) {

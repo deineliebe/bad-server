@@ -15,21 +15,21 @@ const { PORT = 3000 } = process.env
 const app = express()
 app.set('trust proxy', 'loopback')
 app.use(cookieParser())
-app.use(cors({
-    origin: ORIGIN_ALLOW,
-    methods: ['GET', 'POST', 'PATCH', 'DELETE', 'OPTIONS'],
-    credentials: true,
-}))
-app.use(rateLimit({
-    windowMs: 15 * 60 * 1000,
-    max: 40,
-    message: 'Превышено количество запросов',
-}))
+app.use(cors({ origin: ORIGIN_ALLOW, credentials: true }))
+app.use(
+    rateLimit({
+        windowMs: 15 * 60 * 1000,
+        max: 40,
+        message: 'Превышено количество запросов',
+    })
+)
 
 app.use(serveStatic(path.join(__dirname, 'public')))
 
 app.use(urlencoded({ extended: true }))
 app.use(json())
+
+app.options('*', cors())
 
 app.use(routes)
 app.use(errors())

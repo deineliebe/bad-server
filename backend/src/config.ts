@@ -23,4 +23,3 @@ export const REFRESH_TOKEN = {
         } as CookieOptions,
     },
 }
-
