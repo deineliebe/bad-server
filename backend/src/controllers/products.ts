@@ -25,7 +25,7 @@ const getProducts = async (req: Request, res: Response, next: NextFunction) => {
                 totalProducts,
                 totalPages,
                 currentPage: Number(page),
-                pageSize: Number(limit),
+                pageSize: Math.min(Number(limit), 10),
             },
         })
     } catch (err) {

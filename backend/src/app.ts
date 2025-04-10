@@ -5,19 +5,24 @@ import 'dotenv/config'
 import express, { json, urlencoded } from 'express'
 import mongoose from 'mongoose'
 import path from 'path'
-import { DB_ADDRESS } from './config'
+import { rateLimit } from 'express-rate-limit'
+import { DB_ADDRESS, ORIGIN_ALLOW } from './config'
 import errorHandler from './middlewares/error-handler'
 import serveStatic from './middlewares/serverStatic'
 import routes from './routes'
 
 const { PORT = 3000 } = process.env
 const app = express()
-
+app.set('trust proxy', 'loopback')
 app.use(cookieParser())
-
-app.use(cors())
-// app.use(cors({ origin: ORIGIN_ALLOW, credentials: true }));
-// app.use(express.static(path.join(__dirname, 'public')));
+app.use(cors({ origin: ORIGIN_ALLOW, credentials: true }))
+app.use(
+    rateLimit({
+        windowMs: 15 * 60 * 1000,
+        max: 40,
+        message: 'Превышено количество запросов',
+    })
+)
 
 app.use(serveStatic(path.join(__dirname, 'public')))
 
@@ -25,6 +30,7 @@ app.use(urlencoded({ extended: true }))
 app.use(json())
 
 app.options('*', cors())
+
 app.use(routes)
 app.use(errors())
 app.use(errorHandler)
