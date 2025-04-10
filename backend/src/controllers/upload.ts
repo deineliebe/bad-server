@@ -28,12 +28,13 @@ export const uploadFile = async (
         if (req.file?.size < 2000) {
             return next(new BadRequestError('Слишком небольшой размер файла'))
         }
+        const newFileName = `${faker.string.uuid()}${extname(req.file?.originalname)}`
         const fileName = process.env.UPLOAD_PATH
-            ? `/${process.env.UPLOAD_PATH}/${req.file.filename}`
-            : `/${req.file?.filename}`
+            ? `/${process.env.UPLOAD_PATH}/${newFileName}`
+            : `/${newFileName}`
         return res.status(constants.HTTP_STATUS_CREATED).send({
             fileName,
-            originalName: `${faker.string.uuid()}${extname(req.file?.originalname)}`,
+            originalName: newFileName,
         })
     } catch (error) {
         return next(error)
