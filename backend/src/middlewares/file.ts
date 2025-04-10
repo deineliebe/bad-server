@@ -19,8 +19,7 @@ const storage = multer.diskStorage({
                 ? `../public/${process.env.UPLOAD_PATH_TEMP}`
                 : '../public'
         )
-        fs.mkdirSync(tempDir, { recursive: true })
-        cb(null, join(__dirname, tempDir))
+        cb(null, tempDir)
     },
 
     filename: (
@@ -32,7 +31,7 @@ const storage = multer.diskStorage({
     },
 })
 
-export const types = [
+const types = [
     'image/png',
     'image/jpg',
     'image/jpeg',
@@ -40,17 +39,12 @@ export const types = [
     'image/svg+xml',
 ]
 
-export const allowedExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.svg']
-
 const fileFilter = (
     _req: Request,
     file: Express.Multer.File,
     cb: FileFilterCallback
 ) => {
     if (!file || !file.mimetype || !types.includes(file.mimetype)) {
-        return cb(null, false)
-    }
-    if (!allowedExtensions.includes(extname(file.originalname))) {
         return cb(null, false)
     }
     return cb(null, true)
