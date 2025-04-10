@@ -27,7 +27,7 @@ const storage = multer.diskStorage({
         file: Express.Multer.File,
         cb: FileNameCallback
     ) => {
-        cb(null, `${faker.string.uuid()}${extname(file.originalname)}`)
+        cb(null, `${uuidv4()}${extname(file.originalname)}`)
     },
 })
 
@@ -49,6 +49,9 @@ const fileFilter = (
     if (!file || !file.mimetype || !types.includes(file.mimetype)) {
         return cb(null, false)
     }
+    if (!allowedExtensions.includes(extname(file.originalname))) {
+        return cb(null, false)
+    }
     return cb(null, true)
 }
 
@@ -59,3 +62,7 @@ export default multer({
         fileSize: 10 * 1024 * 1024,
     },
 })
+
+function uuidv4() {
+    throw new Error('Function not implemented.')
+}

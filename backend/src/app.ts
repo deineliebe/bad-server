@@ -16,7 +16,7 @@ const app = express()
 app.set('trust proxy', 'loopback')
 app.use(cookieParser())
 app.use(cors({
-    origin: ORIGIN_ALLOW.split(','),
+    origin: ORIGIN_ALLOW,
     methods: ['GET', 'POST', 'PATCH', 'DELETE', 'OPTIONS'],
     credentials: true,
 }))
