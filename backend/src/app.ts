@@ -17,7 +17,7 @@ app.set('trust proxy', 'loopback')
 app.use(cookieParser())
 app.use(cors({
     origin: ORIGIN_ALLOW.split(','),
-    methods: ['GET', 'POST', 'PATCH', 'DELETE'],
+    methods: ['GET', 'POST', 'PATCH', 'DELETE', 'OPTIONS'],
     credentials: true,
 }))
 app.use(rateLimit({
@@ -30,8 +30,6 @@ app.use(serveStatic(path.join(__dirname, 'public')))
 
 app.use(urlencoded({ extended: true }))
 app.use(json())
-
-app.options('*', cors())
 
 app.use(routes)
 app.use(errors())
