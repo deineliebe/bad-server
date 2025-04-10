@@ -27,7 +27,8 @@ const storage = multer.diskStorage({
         file: Express.Multer.File,
         cb: FileNameCallback
     ) => {
-        cb(null, `${uuidv4()}${extname(file.originalname)}`)
+        const newName = `${faker.string.uuid()}${extname(file.originalname)}`
+        cb(null, newName)
     },
 })
 
@@ -62,7 +63,3 @@ export default multer({
         fileSize: 10 * 1024 * 1024,
     },
 })
-
-function uuidv4() {
-    throw new Error('Function not implemented.')
-}
