@@ -56,6 +56,21 @@ export const validateOrderBody = celebrate({
     }),
 })
 
+export const validateOrdersRetrievingBody = celebrate({
+    query: Joi.object().keys({
+        page: Joi.number().positive().default(1),
+        limit: Joi.number().positive().default(10),
+        sortField: Joi.string().default('createdAt'),
+        sortOrder: Joi.string().default('desc'),
+        status: Joi.string(),
+        totalAmountFrom: Joi.number().positive().allow(0),
+        totalAmountTo: Joi.number().positive().allow(0),
+        orderDateFrom: Joi.date(),
+        orderDateTo: Joi.date(),
+        search: Joi.number().allow(''),
+    }),
+})
+
 // валидация товара.
 // name и link - обязательные поля, name - от 2 до 30 символов, link - валидный url
 export const validateProductBody = celebrate({
