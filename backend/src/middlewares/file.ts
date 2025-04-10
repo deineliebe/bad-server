@@ -13,13 +13,14 @@ const storage = multer.diskStorage({
         _file: Express.Multer.File,
         cb: DestinationCallback
     ) => {
-        const directoryForFilesPath = process.env.UPLOAD_PATH_TEMP
-            ? `../public/${process.env.UPLOAD_PATH_TEMP}`
-            : '../public'
-        if (!fs.existsSync(directoryForFilesPath)) {
-            fs.mkdirSync(directoryForFilesPath, { recursive: true })
-        }
-        cb(null, join(__dirname, directoryForFilesPath))
+        const tempDir = join(
+            __dirname,
+            process.env.UPLOAD_PATH_TEMP
+                ? `../public/${process.env.UPLOAD_PATH_TEMP}`
+                : '../public'
+        )
+        fs.mkdirSync(tempDir, { recursive: true })
+        cb(null, join(__dirname, tempDir))
     },
 
     filename: (
@@ -27,7 +28,7 @@ const storage = multer.diskStorage({
         file: Express.Multer.File,
         cb: FileNameCallback
     ) => {
-        cb(null, uuidv4() + extname(file.originalname))
+        cb(null, uuidv4().concat(extname(file.originalname)))
     },
 })
 
